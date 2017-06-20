@@ -13355,6 +13355,25 @@ Make sure to keep track of the various features and conditions you tried before 
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer</strong>:  80.36</p>
+<p>To make the above model predict atleast 80% of the accurate results,following approach has been taken:</p>
+<p>Q.1&gt; What features did you look at?</p>
+<p>Ans: Looked at various combination of features using the plots.
+Plots were plotted for both male and Female.Information gathered from the below mentioned plots was used for  deciding upon the features for the final model.
+a) Age vs Passenger class, 
+b) Age vs  Number of siblings and spouses of the passenger aboard (SibSp), 
+c) Age vs Number of parents and children of the passenger aboard (Parch)</p>
+<p>Q.2&gt; Were certain features more informative than others?</p>
+<p>Ans: Yes,It was observed that none of the male features clearly predicted if the person would survive or not.
+Whereas in the case of "Female" passengers, features such as "Parch" and "SibSp" were good enough to give the      model an accuracy above 80%.
+SibSp: Number of siblings and spouses of the passenger aboard
+Parch: Number of parents and children of the passenger aboard</p>
+<p>Q.3&gt; Which conditions did you use to split the survival outcomes in the data?</p>
+<p>Ans: Female passengers fulfilling the following conditions were predicted not to survive(those not falling in these conditions are likely to survive):
+---&gt; if the passenger has more than 4 siblings and spouses.
+---&gt; or if the passenger has 4 parents and children combined.
+Whereas in case of male passengers if the age is less than 10 years, he is likely to survive.</p>
+<p>Q.4&gt; How accurate are your predictions?</p>
+<p>Ans: After implementing the above conditions, the model is giving an accuracy of 80.36%</p>
 
 </div>
 </div>
