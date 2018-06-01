@@ -129,7 +129,7 @@ class Environment(object):
         distance = self.compute_dist(start, destination)
         deadline = distance * 5 # 5 time steps per intersection away
         if(self.verbose == True): # Debugging
-            print "Environment.reset(): Trial set up with start = {}, destination = {}, deadline = {}".format(start, destination, deadline)
+            print( "Environment.reset(): Trial set up with start = {}, destination = {}, deadline = {}".format(start, destination, deadline))
 
         # Create a map of all possible initial positions
         positions = dict()
@@ -180,14 +180,14 @@ class Environment(object):
         """ This function is called when a time step is taken turing a trial. """
 
         # Pretty print to terminal
-        print ""
-        print "/-------------------"
-        print "| Step {} Results".format(self.t)
-        print "\-------------------"
-        print ""
+        print ("")
+        print ("/-------------------")
+        print ("| Step {} Results".format(self.t))
+        print ("\-------------------")
+        print ("")
 
         if(self.verbose == True): # Debugging
-            print "Environment.step(): t = {}".format(self.t)
+            print ("Environment.step(): t = {}".format(self.t))
 
         # Update agents, primary first
         if self.primary_agent is not None:
@@ -210,12 +210,12 @@ class Environment(object):
                 self.done = True
                 self.success = False
                 if self.verbose: # Debugging
-                    print "Environment.step(): Primary agent hit hard time limit ({})! Trial aborted.".format(self.hard_time_limit)
+                    print ("Environment.step(): Primary agent hit hard time limit ({})! Trial aborted.".format(self.hard_time_limit))
             elif self.enforce_deadline and agent_deadline <= 0:
                 self.done = True
                 self.success = False
                 if self.verbose: # Debugging
-                    print "Environment.step(): Primary agent ran out of time! Trial aborted."
+                    print ("Environment.step(): Primary agent ran out of time! Trial aborted.")
 
         self.t += 1
 
@@ -313,7 +313,10 @@ class Environment(object):
                 elif inputs['oncoming'] == 'right': # Oncoming car turning right
                     violation = 4 # Accident
             else: # Green light
-                heading = (heading[1], -heading[0]) # Valid move. We assume the cab will wait for the lane to be clear on a green light, before taking the left turn.
+                if inputs['oncoming'] == 'right' or inputs['oncoming'] == 'forward': # Incoming traffic
+                    violation = 3 # Accident
+                else: # Valid move!
+                    heading = (heading[1], -heading[0])
 
         # Agent wants to drive right:
         elif action == 'right':
@@ -324,7 +327,7 @@ class Environment(object):
 
         # Agent wants to perform no action:
         elif action == None:
-            if light == 'green': 
+            if light == 'green' and inputs['oncoming'] != 'left': # No oncoming traffic
                 violation = 1 # Minor violation
 
 
@@ -332,9 +335,6 @@ class Environment(object):
         if violation == 0:
             if action == agent.get_next_waypoint(): # Was it the correct action?
                 reward += 2 - penalty # (2, 1)
-            elif action == None and light != 'green' and agent.get_next_waypoint() == 'right':
-                # valid action but incorrect (idling at red light, when we should have gone right on red)
-                reward += 1 - penalty # (1, 0)
             elif action == None and light != 'green': # Was the agent stuck at a red light?
                 reward += 2 - penalty # (2, 1)
             else: # Valid but incorrect
@@ -369,10 +369,10 @@ class Environment(object):
                 self.success = True
 
                 if(self.verbose == True): # Debugging
-                    print "Environment.act(): Primary agent has reached destination!"
+                    print( "Environment.act(): Primary agent has reached destination!")
 
             if(self.verbose == True): # Debugging
-                print "Environment.act() [POST]: location: {}, heading: {}, action: {}, reward: {}".format(location, heading, action, reward)
+                print ("Environment.act() [POST]: location: {}, heading: {}, action: {}, reward: {}".format(location, heading, action, reward))
 
             # Update metrics
             self.step_data['t'] = self.t
@@ -390,7 +390,7 @@ class Environment(object):
             self.trial_data['actions'][violation] += 1
 
             if(self.verbose == True): # Debugging
-                print "Environment.act(): Step data: {}".format(self.step_data)
+                print ("Environment.act(): Step data: {}".format(self.step_data))
         return reward
 
     def compute_dist(self, a, b):

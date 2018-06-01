@@ -78,10 +78,10 @@ class Simulator(object):
                 self.paused = False
             except ImportError as e:
                 self.display = False
-                print "Simulator.__init__(): Unable to import pygame; display disabled.\n{}: {}".format(e.__class__.__name__, e)
+                print( "Simulator.__init__(): Unable to import pygame; display disabled.\n{}: {}".format(e.__class__.__name__, e))
             except Exception as e:
                 self.display = False
-                print "Simulator.__init__(): Error initializing GUI objects; display disabled.\n{}: {}".format(e.__class__.__name__, e)
+                print ("Simulator.__init__(): Error initializing GUI objects; display disabled.\n{}: {}".format(e.__class__.__name__, e))
 
         # Setup metrics to report
         self.log_metrics = log_metrics
@@ -144,15 +144,15 @@ class Simulator(object):
                     break
 
             # Pretty print to terminal
-            print 
-            print "/-------------------------"
+            print ()
+            print ("/-------------------------")
             if testing:
-                print "| Testing trial {}".format(trial)
+                print ("| Testing trial {}".format(trial))
             else:
-                print "| Training trial {}".format(trial)
+                print( "| Training trial {}".format(trial))
 
-            print "\-------------------------"
-            print 
+            print ("\-------------------------")
+            print ()
 
             self.env.reset(testing)
             self.current_time = 0.0
@@ -214,11 +214,11 @@ class Simulator(object):
 
             # Trial finished
             if self.env.success == True:
-                print "\nTrial Completed!"
-                print "Agent reached the destination."
+                print ("\nTrial Completed!")
+                print ("Agent reached the destination.")
             else:
-                print "\nTrial Aborted!"
-                print "Agent did not reach the destination."
+                print ("\nTrial Aborted!")
+                print ("Agent did not reach the destination.")
 
             # Increment
             total_trials = total_trials + 1
@@ -243,7 +243,7 @@ class Simulator(object):
 
             self.log_file.close()
 
-        print "\nSimulation ended. . . "
+        print ("\nSimulation ended. . . ")
 
         # Report final metrics
         if self.display:
@@ -258,7 +258,7 @@ class Simulator(object):
 
             # Previous State
             if status['state']:
-                print "Agent previous state: {}".format(status['state'])
+                print ("Agent previous state: {}".format(status['state']))
             else:
                 print "!! Agent state not been updated!"
 
